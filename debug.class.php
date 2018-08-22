@@ -23,6 +23,12 @@ ABSTRACT CLASS debug {
  */
    private static $dumping = false;
 
+   /**
+   /**
+    * @var application's config
+    */
+   public static $app_config;
+
 
    /**
     * Max depth of recursion, to avoid infinite loops on recursive referrences
@@ -33,7 +39,15 @@ ABSTRACT CLASS debug {
    /**
     * The config object for use on the functions below
     */
-   public static function config();
+   public static function config() {
+      return static::$app_config;
+   }
+   /**
+    * The config object for use on the functions below
+    */
+   public static function set_config($config) {
+      return static::$app_config = $config;
+   }
 
   /**
    * echo only if IP matched
@@ -51,13 +65,83 @@ ABSTRACT CLASS debug {
 
    }
 
+
+   /**
+    * is_developer()
+    *
+    * Checks if the user is developer according to his/her IP
+    *
+    */
+   public static function is_developer() {
+      if (php_sapi_name() == "cli") {
+         return true;
+      }
+
+      # Fix for issue #6
+      if (static::current_ip_in_network())
+         return true;
+
+      if (isset(static::config()->developer_ips))
+         return in_array(static::current_user_ip(), (array) static::config()->developer_ips);
+      else
+         return false;
+   }
+
+   /**
+    * ip_in_network(string $ip)
+    * Checks if the IP is within the network of the server
+    * @param string $ip the IP to check
+    */
+   public static function ip_in_network($ip) {
+      if (preg_match('/^((10\.\d+|192\.168)\.\d+\.\d+|\:\:1|127\.0\.0\.1)$/',$ip)) {
+         return true;
+      }
+      else {
+         return false;
+      }
+   }
+
+
+   /**
+    * bool current_ip_in_network(void)
+    * Checks if the current user's ip is in the network
+    * @uses ip_in_network
+    */
+   public static function current_ip_in_network() {
+      return static::ip_in_network(static::current_user_ip());
+   }
+
+
+   /**
+    * string current_user_ip()
+    * Gets the IP of the user
+    *
+    * @since ADD MVC 0.1
+    */
+   public static function current_user_ip() {
+
+      $ip_server_var_keys = array(
+         'HTTP_CLIENT_IP',
+         'HTTP_X_FORWARDED_FOR'
+      );
+
+      foreach ($ip_server_var_keys as $key) {
+         if (!empty($_SERVER[$key])) {
+            return $_SERVER[$key];
+         }
+      }
+
+      return @$_SERVER['REMOTE_ADDR'];
+
+   }
+
    /**
     * Declare this on extensions to set the allowed IPs or allowed users to see the debug prints
     * @return boolean true if allowed false if not
     * @since ADD MVC 0.0
     */
    static function current_user_allowed() {
-      return add::is_developer();
+      return static::is_developer();
    }
 
 
@@ -162,6 +246,13 @@ ABSTRACT CLASS debug {
    }
 
 
+   /**
+    * content_type()
+    */
+   public static function content_type() {
+      return static::config()->content_type;
+   }
+
 
    /**
     * XMP Var Dump
@@ -175,7 +266,7 @@ ABSTRACT CLASS debug {
          $args[0] = static::get_declared_globals();
       }
       $var = call_user_func_array('self::return_var_dump',$args);
-      if (add::content_type() == 'text/plain') {
+      if (static::content_type() == 'text/plain') {
          $output="\r\nFile Line:".self::caller_file_line()."\r\n".$var."\r\n";
       }
       else {
