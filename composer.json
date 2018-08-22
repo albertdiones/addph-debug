@@ -1,0 +1,12 @@
+{
+    "name": "addph/debug",
+    "description": "Debug tools of ADD framework",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Albert Diones",
+            "email": "albert@add.ph"
+        }
+    ],
+    "require": {}
+}
