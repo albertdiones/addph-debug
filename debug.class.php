@@ -604,7 +604,10 @@ ABSTRACT CLASS debug {
     * @since ADD MVC 0.10.4
     */
    public static function return_print_data($label,$value, $escape = true) {
-      $smarty = new add_smarty();
+      $smarty_class = isset(static::config()->smarty_class) ? static::config()->smarty_class : 'Smarty';
+      $print_data_template = isset(static::config()->print_data_template) ? static::config()->print_data_template : 'views/print_data.tpl';
+      $smarty = new $smarty_class();
+      $smarty -> assign('content_type',static::content_type());
       $smarty -> assign('label',$label);
       $smarty -> assign('value',$value);
       $smarty -> assign('indentations',0);
@@ -616,6 +619,6 @@ ABSTRACT CLASS debug {
          $smarty -> assign('escape',true);
       }
 
-      return $smarty->fetch('debug/print_data.tpl');
+      return $smarty->fetch($print_data_template);
    }
 }
