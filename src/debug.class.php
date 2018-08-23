@@ -65,6 +65,10 @@ ABSTRACT CLASS debug {
 
    }
 
+   public static function is_cli() {
+       return php_sapi_name() == "cli";
+   }
+
 
    /**
     * is_developer()
@@ -73,7 +77,7 @@ ABSTRACT CLASS debug {
     *
     */
    public static function is_developer() {
-      if (php_sapi_name() == "cli") {
+      if (static::is_cli()) {
          return true;
       }
 
@@ -223,8 +227,11 @@ ABSTRACT CLASS debug {
 
       $file_line = @$backtrace['file'].':'.@$backtrace['line'];
 
-      $file_line            = preg_replace('/^'.preg_quote(static::config()->root_dir,'/').'\//','',$file_line);
+      $config = static::config();
 
+      if (isset($config->root_dir)) {
+         $file_line = preg_replace('/^'.preg_quote($config->root_dir,'/').'\//','',$file_line);
+      }
       return $file_line;
 
    }
@@ -255,7 +262,18 @@ ABSTRACT CLASS debug {
     * content_type()
     */
    public static function content_type() {
-      return static::config()->content_type;
+      if ($config = static::config()) {
+          return $config->content_type;
+      }
+      else if (static::is_cli()) {
+          return "text/plain";
+      }
+      else if (isset($_SERVER['CONTENT_TYPE'])) {
+          return $_SERVER['CONTENT_TYPE'];
+      }
+      else {
+          return "text/html";
+      }
    }
 
 
