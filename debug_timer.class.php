@@ -140,7 +140,7 @@ ABSTRACT CLASS debug_timer EXTENDS debug {
     */
    public static function print_data($label,$lap_difference,$escape=false) {
       $diff = static::us_diff_readable_format($lap_difference);
-      if (add::content_type() == 'text/html') {
+      if (static::content_type() == 'text/html') {
          $diff = static::us_diff_html($diff,$lap_difference);
       }
       else {
@@ -193,7 +193,7 @@ ABSTRACT CLASS debug_timer EXTENDS debug {
     */
    public static function us_diff_html($string, $second_difference) {
 
-      if (add::content_type() == 'text/plain') {
+      if (static::content_type() == 'text/plain') {
          return "$string";
       }
 
