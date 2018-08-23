@@ -608,6 +608,7 @@ ABSTRACT CLASS debug {
       $print_data_template = isset(static::config()->print_data_template) ? static::config()->print_data_template : 'views/print_data.tpl';
       $smarty = new $smarty_class();
       $smarty -> assign('content_type',static::content_type());
+      $smarty -> assign('print_data_template',$print_data_template);
       $smarty -> assign('label',$label);
       $smarty -> assign('value',$value);
       $smarty -> assign('indentations',0);

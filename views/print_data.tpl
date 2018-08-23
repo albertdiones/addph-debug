@@ -6,7 +6,7 @@
          *}{$label}:
 {*          *}{foreach $value as $item_label => $item_value}
 {*          *}{'  '|str_repeat:($indentations+1)}{*
-            *}{if is_int($item_label)}#{else}*{/if} {include file='debug/print_data.tpl' label=$item_label value=$item_value indentations=$indentations+1}{*
+            *}{if is_int($item_label)}#{else}*{/if} {include file=$print_data_template label=$item_label value=$item_value indentations=$indentations+1}{*
          *}{foreachelse}{*
             *}_[]_{*
          *}{/foreach}{*
@@ -23,7 +23,7 @@
             <i>{if $value}Yes{else}No{/if}</i>
          {elseif is_array($value) or is_object($value)}
             {foreach $value as $item_label => $item_value}
-               {include file='debug/print_data.tpl' label=$item_label value=$item_value}
+               {include file=$print_data_template label=$item_label value=$item_value}
             {foreachelse}
                <i>Blank Array</i>
             {/foreach}

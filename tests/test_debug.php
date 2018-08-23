@@ -68,5 +68,23 @@ class debug_test extends TestCase
       $this->assertRegexp('/'.preg_quote($test_string,'/').'/',$result);
    }
 
+   /**
+    * @test
+    * */
+   public function test_print_data_array() {
+
+      $label = "message";
+      $test_strings = array("Hello", "World");
+
+      ob_start();
+      debug::print_data($label,$test_strings);
+      $result = ob_get_clean();
+
+
+      $this->assertRegexp('/'.preg_quote($label,'/').'/',$result);
+      $this->assertRegexp('/'.preg_quote($test_strings[0],'/').'/',$result);
+      $this->assertRegexp('/'.preg_quote($test_strings[1],'/').'/',$result);
+   }
+
 }
 ?>
