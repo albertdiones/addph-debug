@@ -1,6 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
-require 'src/debug.class.php';
+require_once 'src/debug.class.php';
 use addph\debug\debug;
 
 class debug_test extends TestCase

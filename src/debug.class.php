@@ -171,7 +171,12 @@ ABSTRACT CLASS debug {
     * @since ADD MVC 0.0
     */
    static function current_url() {
-      return "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+      if (isset($_SERVER['HTTP_HOST'])) {
+         return "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+      }
+      else {
+         return null;
+      }
    }
 
    /**
@@ -216,7 +221,7 @@ ABSTRACT CLASS debug {
          return "Unknown Location";
       }
 
-      $file_line = $backtrace['file'].':'.$backtrace['line'];
+      $file_line = @$backtrace['file'].':'.@$backtrace['line'];
 
       $file_line            = preg_replace('/^'.preg_quote(static::config()->root_dir,'/').'\//','',$file_line);
 
