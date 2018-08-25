@@ -15,12 +15,12 @@ namespace addph\debug;
  */
 ABSTRACT CLASS debug {
 
-/**
- * (var) dumping flag
- *
- * @var boolean
- *
- */
+   /**
+    * (var) dumping flag
+    *
+    * @var boolean
+    *
+    */
    private static $dumping = false;
 
    /**
@@ -49,14 +49,14 @@ ABSTRACT CLASS debug {
       return static::$app_config = $config;
    }
 
-  /**
-   * echo only if IP matched
-   *
-   * @param string $arg the string to echo
-   *
-   * @author albertdiones@gmail.com
-   * @since ADD MVC 0.0
-   */
+   /**
+    * echo only if IP matched
+    *
+    * @param string $arg the string to echo
+    *
+    * @author albertdiones@gmail.com
+    * @since ADD MVC 0.0
+    */
    static function restricted_echo($arg) {
 
       if (static::current_user_allowed()) {
@@ -147,20 +147,20 @@ ABSTRACT CLASS debug {
 
 
 
-  /**
-   * Prints request variables and sessions variables
-   * @since ADD MVC 0.0
-   */
+   /**
+    * Prints request variables and sessions variables
+    * @since ADD MVC 0.0
+    */
    static function print_request() {
 
       $request = array(
-            "url" => self::current_url(),
-            "get" => $_GET,
-            "post" => $_POST,
-            "cookie" => $_COOKIE,
-            "request" => $_REQUEST,
-            "session" => $_SESSION
-         );
+         "url" => self::current_url(),
+         "get" => $_GET,
+         "post" => $_POST,
+         "cookie" => $_COOKIE,
+         "request" => $_REQUEST,
+         "session" => $_SESSION
+      );
 
       self::html_print($request,"Request");
    }
@@ -192,9 +192,9 @@ ABSTRACT CLASS debug {
 
       foreach ($traces as $trace) {
          $file_line = array(
-               'file' => $trace['file'],
-               'line' => $trace['line']
-            );
+            'file' => $trace['file'],
+            'line' => $trace['line']
+         );
          $file_lines[]  = $file_line;
          if (count(array_keys($file_lines,$file_line))>20) {
             die("Possible infinite loop detected");
@@ -210,10 +210,10 @@ ABSTRACT CLASS debug {
       }
    }
 
-  /**
-   * Returns the file and line number of the caller of the function
-   * @since ADD MVC 0.0
-   */
+   /**
+    * Returns the file and line number of the caller of the function
+    * @since ADD MVC 0.0
+    */
    static function caller_file_line() {
       $backtrace = static::protected_caller_backtrace();
 
@@ -229,10 +229,10 @@ ABSTRACT CLASS debug {
 
    }
 
-  /**
-   * Returns the debug info of the caller
-   * @since ADD MVC 0.7
-   */
+   /**
+    * Returns the debug info of the caller
+    * @since ADD MVC 0.7
+    */
    public static function caller_backtrace() {
       return static::protected_caller_backtrace();
    }
@@ -295,8 +295,8 @@ ABSTRACT CLASS debug {
       /**
        * Debugging for https://code.google.com/p/add-mvc-framework/issues/detail?id=93
        *
-        throw new Exception("test");
-        die();
+      throw new Exception("test");
+      die();
        */
 
       $var = ob_get_clean();
@@ -352,8 +352,8 @@ ABSTRACT CLASS debug {
                    */
                   if ( is_array( $value ) ) {
                      if (
-                           $indentation < static::$max_indentation
-                           ) {
+                        $indentation < static::$max_indentation
+                     ) {
                         $dump .= static::return_pretty_var_dump($value);
                      }
                      else {
@@ -380,9 +380,9 @@ ABSTRACT CLASS debug {
             $dump .= $type_string;
             if (strlen($arg) > 70) {
                $indentation_string = str_repeat("$indentation_char",
-                     $indentation
-                     + $value_indentation
-                  );
+                  $indentation
+                  + $value_indentation
+               );
                $dump .= " (word-wrapped)\r\n";
                $dump .= $indentation_string.wordwrap($arg,70,"\r\n".$indentation_string)."\r\n";
             }
@@ -420,14 +420,14 @@ ABSTRACT CLASS debug {
    }
 
 
-  /**
-   * make a list out of $arg
-   *
-   * @param mixed $arg the data to print
-   * @param string $name the title of this list
-   *
-   * @since ADD MVC 0.0
-   */
+   /**
+    * make a list out of $arg
+    *
+    * @param mixed $arg the data to print
+    * @param string $name the title of this list
+    *
+    * @since ADD MVC 0.0
+    */
    static function html_print($arg,$name) {
       ob_start();
       if (is_array($arg) || is_object($arg)) {
@@ -462,14 +462,14 @@ ABSTRACT CLASS debug {
       self::restricted_echo($output);
    }
 
-  /**
-   * evaluates $var and prints $var and the value it returns
-   *
-   * @param string $var the command to eval
-   *
-   * @since ADD MVC 0.0
-   */
-  static function print_eval($var) {
+   /**
+    * evaluates $var and prints $var and the value it returns
+    *
+    * @param string $var the command to eval
+    *
+    * @since ADD MVC 0.0
+    */
+   static function print_eval($var) {
       $var=preg_replace('/\$(\w+)/','$GLOBALS[$1]',$var);
       echo "<b>".htmlspecialchars($var)."</b> ";
 
@@ -539,25 +539,25 @@ ABSTRACT CLASS debug {
     */
    public function get_declared_globals() {
       return array_diff_key(
-            $GLOBALS,
-            array_flip(
-                  array(
-                        '_GET',
-                        '_POST',
-                        '_COOKIE',
-                        '_REQUEST',
-                        '_SERVER',
-                        '_FILES',
-                        '_ENV',
-                        'php_errormsg',
-                        'HTTP_RAW_POST_DATA',
-                        'http_response_header',
-                        'argc',
-                        'argv',
-                        'GLOBALS',
-                     )
-               )
-         );
+         $GLOBALS,
+         array_flip(
+            array(
+               '_GET',
+               '_POST',
+               '_COOKIE',
+               '_REQUEST',
+               '_SERVER',
+               '_FILES',
+               '_ENV',
+               'php_errormsg',
+               'HTTP_RAW_POST_DATA',
+               'http_response_header',
+               'argc',
+               'argv',
+               'GLOBALS',
+            )
+         )
+      );
    }
 
 
@@ -610,8 +610,9 @@ ABSTRACT CLASS debug {
     */
    public static function return_print_data($label,$value, $escape = true) {
       $smarty_class = isset(static::config()->smarty_class) ? static::config()->smarty_class : 'Smarty';
-      $print_data_template = isset(static::config()->print_data_template) ? static::config()->print_data_template : 'views/print_data.tpl';
+      $print_data_template = isset(static::config()->print_data_template) ? static::config()->print_data_template : 'debug/print_data.tpl';
       $smarty = new $smarty_class();
+      $smarty->addTemplateDir(dirname(__DIR__).'/views');
       $smarty -> assign('content_type',static::content_type());
       $smarty -> assign('print_data_template',$print_data_template);
       $smarty -> assign('label',$label);
