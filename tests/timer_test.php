@@ -3,7 +3,7 @@ require 'init.php';
 require __DIR__.'/../src/timer.class.php';
 use addph\debug\timer;
 
-class mail_test extends debug_test
+class timer_test extends debug_test
 {
    
    public static $mail_arguments;
