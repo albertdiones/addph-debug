@@ -5,8 +5,6 @@ use addph\debug\timer;
 
 class timer_test extends debug_test
 {
-   
-   public static $mail_arguments;
 
    /**
     * @test
