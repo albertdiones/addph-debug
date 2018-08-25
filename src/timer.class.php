@@ -25,7 +25,7 @@ namespace addph\debug;
  * @since ADD MVC 0.0
  * @version 0.0
  */
-ABSTRACT CLASS debug_timer EXTENDS debug {
+CLASS timer EXTENDS debug {
 
    /**
     * The start timestamp of the timer
@@ -103,8 +103,8 @@ ABSTRACT CLASS debug_timer EXTENDS debug {
 
       $lap_difference = $this->lap($label);
 
-      $lap1 = array_shift(array_slice($this->lap_timestamps,0,1));
-      $lap2 = array_shift(array_slice($this->lap_timestamps,-1,1));
+      $lap1 = array_slice($this->lap_timestamps,0,1)[0];
+      $lap2 = array_slice($this->lap_timestamps,-1,1)[0];
 
       return $this->print_lap_difference($lap1, $lap2);
    }

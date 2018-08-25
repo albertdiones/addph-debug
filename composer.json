@@ -2,7 +2,7 @@
     "name": "addph/debug",
     "description": "Debug tools of ADD framework",
     "type": "library",
-    "version":  "v0.0.4",
+    "version":  "v0.0.5",
     "authors": [
         {
             "name": "Albert Diones",
