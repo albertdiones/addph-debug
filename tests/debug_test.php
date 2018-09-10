@@ -6,6 +6,8 @@ use addph\debug\debug;
 class debug_test extends \addph\debug\test\base
 {
 
+   static $debug_class = '\addph\debug\debug';
+
    /**
     * @test
     * */

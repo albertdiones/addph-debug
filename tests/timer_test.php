@@ -1,6 +1,7 @@
 <?php
 require 'init.php';
 require __DIR__.'/../src/timer.class.php';
+require 'debug_test.php';
 use addph\debug\timer;
 
 class timer_test extends debug_test

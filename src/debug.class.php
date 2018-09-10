@@ -21,7 +21,7 @@ ABSTRACT CLASS debug {
     * @var boolean
     *
     */
-   private static $dumping = false;
+   protected static $dumping = false;
 
    /**
    /**
@@ -40,6 +40,11 @@ ABSTRACT CLASS debug {
     * The config object for use on the functions below
     */
    public static function config() {
+      if (!isset(static::$app_config)) {
+          static::$app_config = (object) array(
+              'root_dir' => dirname(dirname(dirname(dirname(dirname(__FILE__)))))
+          );
+      }
       return static::$app_config;
    }
    /**
@@ -158,7 +163,7 @@ ABSTRACT CLASS debug {
    static function print_request() {
 
       $request = array(
-         "url" => self::current_url(),
+         "url" => static::current_url(),
          "get" => $_GET,
          "post" => $_POST,
          "cookie" => $_COOKIE,
@@ -166,7 +171,7 @@ ABSTRACT CLASS debug {
          "session" => $_SESSION
       );
 
-      self::html_print($request,"Request");
+      static::html_print($request,"Request");
    }
 
    /**
@@ -210,7 +215,7 @@ ABSTRACT CLASS debug {
          foreach ($file_lines as &$file_line) {
             $file_line = implode(":",$file_line);
          }
-         self::html_print($file_lines,"Location");
+         static::html_print($file_lines,"Location");
       }
    }
 
@@ -262,7 +267,7 @@ ABSTRACT CLASS debug {
     * content_type()
     */
    public static function content_type() {
-      if ($config = static::config()) {
+      if ($config = static::config() && isset($config->content_type)) {
           return $config->content_type;
       }
       else if (static::is_cli()) {
@@ -288,14 +293,14 @@ ABSTRACT CLASS debug {
       if (!$args) {
          $args[0] = static::get_declared_globals();
       }
-      $var = call_user_func_array('self::return_var_dump',$args);
+      $var = call_user_func_array('static::return_var_dump',$args);
       if (static::content_type() == 'text/plain') {
-         $output="\r\nFile Line:".self::caller_file_line()."\r\n".$var."\r\n";
+         $output="\r\nFile Line:".static::caller_file_line()."\r\n".$var."\r\n";
       }
       else {
-         $output="<div style='clear:both'><b>".self::caller_file_line()."</b><xmp>".$var."</xmp></div>";
+         $output="<div style='clear:both'><b>".static::caller_file_line()."</b><xmp>".$var."</xmp></div>";
       }
-      self::restricted_echo($output);
+      static::restricted_echo($output);
       return $args[0];
    }
 
@@ -307,7 +312,7 @@ ABSTRACT CLASS debug {
     */
    final public static function return_var_dump($args) {
       ob_start();
-      self::$dumping = true;
+      static::$dumping = true;
       call_user_func_array('var_dump',func_get_args());
 
       /**
@@ -318,7 +323,7 @@ ABSTRACT CLASS debug {
        */
 
       $var = ob_get_clean();
-      self::$dumping = false;
+      static::$dumping = false;
       return $var;
    }
 
@@ -329,7 +334,7 @@ ABSTRACT CLASS debug {
     *
     */
    public static function dumping() {
-      return self::$dumping;
+      return static::$dumping;
    }
 
    /**
@@ -453,7 +458,7 @@ ABSTRACT CLASS debug {
              <b onclick='$(this).parents(\"li:eq(0)\").find(\"ul\").slideToggle()' style='cursor:pointer;text-decoration:underline;'>$name</b> <small>(".gettype($arg)."{".count($arg)."})</small>");
 
          foreach ($arg as $i=>$value) {
-            self::html_print($value,$i);
+            static::html_print($value,$i);
             unset($value);
          }
 
@@ -477,7 +482,7 @@ ABSTRACT CLASS debug {
       }
       echo("</li></ul>");
       $output = ob_get_clean();
-      self::restricted_echo($output);
+      static::restricted_echo($output);
    }
 
    /**
@@ -500,7 +505,7 @@ ABSTRACT CLASS debug {
          echo $var."<br />";
       }
       else {
-         echo "<xmp>".self::return_var_dump(array($var))."</xmp><br />";
+         echo "<xmp>".static::return_var_dump(array($var))."</xmp><br />";
       }
 
    }
@@ -546,9 +551,9 @@ ABSTRACT CLASS debug {
     * @since ADD MVC 0.0
     */
    public static function deprecated_file() {
-      $locations = self::location();
-      $var_dump = self::return_var_dump($locations);
-      mail(self::EMAIL_ADDRESS,"DEPRECATED FILE STILL IN USE ".self::caller_file_line(),$var_dump);
+      $locations = static::location();
+      $var_dump = static::return_var_dump($locations);
+      mail(static::EMAIL_ADDRESS,"DEPRECATED FILE STILL IN USE ".static::caller_file_line(),$var_dump);
    }
 
    /**

@@ -4,8 +4,10 @@ require_once 'init.php';
 use addph\debug\debug;
 use PHPUnit\Framework\TestCase;
 
-class debug_test extends TestCase
+class debug_standalone_test extends TestCase
 {
+
+    static $debug_class = '\addph\debug\debug';
 
     /**
      * @test

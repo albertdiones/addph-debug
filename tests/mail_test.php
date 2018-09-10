@@ -6,6 +6,8 @@ use addph\debug\mail as debug_mail;
 
 class mail_test extends debug_test
 {
+
+   public static $debug_class = '\addph\debug\mail';
    
    public static $mail_arguments;
 

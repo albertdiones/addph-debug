@@ -8,7 +8,8 @@ use addph\debug\debug;
 ABSTRACT CLASS base EXTENDS TestCase {
    public function setUp() {
 
-      debug::set_config(
+      $class_name = static::$debug_class;
+      $class_name::set_config(
          (object) array(
             'root_dir' => realpath('./'),
 
